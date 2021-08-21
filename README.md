@@ -29,4 +29,4 @@ usage example :`--noise_std 0.02`
 
 
 ## Notice
-Code is on progress. Please tell me any known details about the paper. 
+Detailed implementation has not been fully explored since there is no available official code yet. Please feel free to come up with any issues or any implementation details. Thanks! 
