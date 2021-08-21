@@ -61,12 +61,10 @@ class SSP(Softplus):
         return F.softplus(input + self.origin, self.beta, self.threshold) - self.sp0
 
 
-def rbf(x, mu, beta):
-    return torch.exp(-(x - mu)**2 / beta**2)
-
-def rbf_revised(x, mu, radius):
+def rbf(x, mu, radius):
 
     return ((2/radius)**(1/2))*(torch.sin((mu*np.pi/radius)*x)/x)
+
 
 def even_samples(n_samples):
     samples = torch.empty(n_samples)
@@ -95,7 +93,7 @@ class MyTransform(object):
 
         displacements = data.pos[edge_index[0]] - data.pos[edge_index[1]]
         distance = torch.cdist(data.pos, data.pos)[np.asarray(edge_index)].reshape(-1, 1)
-        distance = rbf_revised(distance.expand(len(distance), self.n_bond_feats), rbf_means, radius = radius)
+        distance = rbf(distance.expand(len(distance), self.n_bond_feats), rbf_means, radius = radius)
         edge_attr = torch.cat((F.normalize(displacements, dim=1), distance), dim = 1)
         
         data.edge_index = edge_index
@@ -131,7 +129,7 @@ class Noise_injection:
 
         displacements = pos[edge_index[0]] - pos[edge_index[1]]
         distance = torch.cdist(pos, pos)[np.asarray(edge_index.cpu())].reshape(-1, 1)
-        distance = rbf_revised(distance.expand(len(distance), n_bond_feats), rbf_means, radius = self.radius)
+        distance = rbf(distance.expand(len(distance), n_bond_feats), rbf_means, radius = self.radius)
         edge_attr = torch.cat((F.normalize(displacements, dim=1), distance), dim = 1)
 
         data.edge_index = edge_index
