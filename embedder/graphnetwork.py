@@ -84,7 +84,7 @@ class GNBlock(nn.Module):
     
     def forward(self, x, edge_index, edge_attr):
         row = edge_index[0]
-        col = edge_index[0]
+        col = edge_index[1]
 
         for i in range(self.M):
             edge_attr_ = self.edge_model[i](x[row], x[col], edge_attr)
